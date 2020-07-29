@@ -118,7 +118,7 @@ SYSTEMD
 
 }
 
-MINECRAFT_JAR="minecraft_server.jar"
+MINECRAFT_JAR="${mc_jar_name}"
 case $OS in
   Ubuntu*)
     ubuntu_linux_setup

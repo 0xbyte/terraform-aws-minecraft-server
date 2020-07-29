@@ -29,6 +29,12 @@ variable "mc_port" {
   default = 25565
 }
 
+variable "mc_jar_name" {
+  description = "The name of the server jar file"
+  type = string
+  default = "minecraft_server.jar"
+}
+
 variable "mc_root_directory" {
   description = "Where to install minecraft on your instance"
   type = string

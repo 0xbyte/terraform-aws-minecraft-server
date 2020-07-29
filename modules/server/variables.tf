@@ -28,6 +28,11 @@ variable "mc_port" {
   type = number
 }
 
+variable "mc_jar_name" {
+  description = "The name of the server jar file"
+  type = string
+}
+
 variable "mc_root_directory" {
   description = "Where to install minecraft on your instance"
   type = string

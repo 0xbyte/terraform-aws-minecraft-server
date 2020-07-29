@@ -19,6 +19,7 @@ module "server" {
   mc_backup_freq = var.mc_backup_freq
   java_ms_mem = var.java_ms_mem
   java_mx_mem = var.java_mx_mem
+  mc_jar_name = var.mc_jar_name
 }
 
 module "powerswitch" {

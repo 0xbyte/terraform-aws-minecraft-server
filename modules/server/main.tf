@@ -129,6 +129,7 @@ data "template_file" "user_data" {
     mc_backup_freq = var.mc_backup_freq
     java_mx_mem = var.java_mx_mem
     java_ms_mem = var.java_ms_mem
+    mc_jar_name = var.mc_jar_name
   }
 }
 
