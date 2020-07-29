@@ -8,3 +8,5 @@
 # Crash log files
 crash.log
 .idea/
+
+ec2-private-key.pem

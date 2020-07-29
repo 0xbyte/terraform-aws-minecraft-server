@@ -1,52 +1,54 @@
 variable "region" {
-  description = "AWS region to deploy infrastructure into"
+  description = "AWS region to deploy server into"
   type = string
-  default = "eu-west-2"
 }
 
 variable "availability_zone" {
-  description = "Availability zone inside the region to deploy infrastructure into"
+  description = "Availability zone inside the region to deploy the server into"
   type = string
-  default = "eu-west-2a"
 }
+
+variable "vpc_id" {
+  description = "The id of the VPC to deploy the server into"
+  type = string
+}
+
+variable "subnet_id" {
+  description = "The id of the subnet to deploy the server into"
+  type = string
+}
+
 variable "mc_port" {
   description = "TCP port for minecraft"
   type        = number
-  default     = 25565
 }
 
 variable "mc_root_directory" {
   description = "Where to install minecraft on your instance"
   type        = string
-  default     = "/home/minecraft"
 }
 
 variable "mc_version" {
   description = "Which version of minecraft to install"
   type        = string
-  default     = "latest"
 }
 
 variable "mc_type" {
   description = "Type of minecraft distribution - snapshot or release"
   type        = string
-  default     = "release"
 }
 
 variable "mc_backup_freq" {
   description = "How often (mins) to sync to S3"
   type        = number
-  default     = 5
 }
 
 variable "java_ms_mem" {
   description = "Java initial and minimum heap size"
   type        = string
-  default     = "2G"
 }
 
 variable "java_mx_mem" {
   description = "Java maximum heap size"
   type        = string
-  default     = "2G"
 }
