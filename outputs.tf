@@ -16,3 +16,7 @@ output "minecraft_server" {
 output "mc_server_files_uploaded_to_bucket" {
   value = module.server.mc_server_files_uploaded_to_bucket
 }
+
+output "server_files_bucket_name" {
+  value = module.server.bucket_name
+}

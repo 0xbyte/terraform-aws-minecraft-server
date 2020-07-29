@@ -21,3 +21,7 @@ output "instance_id" {
 output "instance_arn" {
   value = module.ec2.arn[0]
 }
+
+output "bucket_name" {
+  value = module.bucket.this_s3_bucket_id
+}
