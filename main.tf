@@ -28,4 +28,6 @@ module "powerswitch" {
   vpc_id = module.networking.vpc_id
   server_instance_id = module.server.instance_id
   server_instance_arn = module.server.instance_arn
+  hostname = var.power_switch_hostname
+  hosted_zone_name = var.power_switch_hosted_zone_name
 }

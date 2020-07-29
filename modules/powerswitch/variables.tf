@@ -22,3 +22,13 @@ variable "server_instance_arn" {
   description = "ARN of the Minecraft server"
   type = string
 }
+
+variable "hostname" {
+  description = "Hostname of the DNS record that will be created to point to the load balancer"
+  type = string
+}
+
+variable "hosted_zone_name" {
+  description = "Hosted zone name of the DNS record that will be created to point to the load balancer"
+  type = string
+}
