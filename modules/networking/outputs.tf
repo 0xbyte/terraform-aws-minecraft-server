@@ -2,8 +2,8 @@ output "vpc_id" {
   value = module.vpc.vpc_id
 }
 
-output "subnet_id" {
-  value = module.vpc.public_subnets[0]
+output "subnet_ids" {
+  value = module.vpc.public_subnets
 }
 
 output "s3_prefix_list_id" {

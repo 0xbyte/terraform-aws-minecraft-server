@@ -4,10 +4,10 @@ variable "region" {
   default = "eu-west-2"
 }
 
-variable "availability_zone" {
-  description = "Availability zone inside the region to deploy infrastructure into"
-  type = string
-  default = "eu-west-2a"
+variable "availability_zones" {
+  description = "Availability zones inside the region to deploy infrastructure into"
+  type = list(string)
+  default = ["eu-west-2a", "eu-west-2b", "eu-west-2c"]
 }
 
 variable "mc_port" {

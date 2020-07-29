@@ -13,3 +13,11 @@ output "private_key_pem" {
 output "mc_server_files_uploaded_to_bucket" {
   value = length(fileset("${path.root}/mc_server_files", "**"))
 }
+
+output "instance_id" {
+  value = module.ec2.id[0]
+}
+
+output "instance_arn" {
+  value = module.ec2.arn[0]
+}
