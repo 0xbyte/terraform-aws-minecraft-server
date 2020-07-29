@@ -1,5 +1,6 @@
 module "server_label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  source = "cloudposse/label/null"
+  version = "0.16.0"
   namespace = "minecraft"
   name = "server"
   delimiter = "-"
@@ -18,6 +19,7 @@ resource "random_string" "bucket_suffix" {
 
 module "bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
+  version = "1.9.0"
   bucket = "${module.server_label.id}-${random_string.bucket_suffix.result}"
   create_bucket = true
   region = var.region
@@ -46,7 +48,7 @@ resource "aws_s3_bucket_object" "server_files" {
 
 module "ec2_iam_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "~> 2.0"
+  version = "2.12.0"
   role_name = module.server_label.id
   create_role = true
   create_instance_profile = true
@@ -58,7 +60,7 @@ module "ec2_iam_role" {
 
 module "ec2_iam_role_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "~> 2.0"
+  version = "2.12.0"
   name        = module.server_label.id
   path        = "/"
   description = "Policy that allows the Minecraft server to pull and push files to the S3 asset bucket"
@@ -89,6 +91,7 @@ EOF
 
 module "ec2_security_group" {
   source = "terraform-aws-modules/security-group/aws"
+  version = "3.13.0"
   name = "${module.server_label.id}-ec2"
   description = "Allow SSH on 22 and TCP on ${var.mc_port} from anywhere. Allow egress only to S3."
   vpc_id = var.vpc_id
@@ -145,6 +148,7 @@ resource "aws_key_pair" "ec2_ssh" {
 
 module "ec2" {
   source = "terraform-aws-modules/ec2-instance/aws"
+  version = "2.15.0"
   name = module.server_label.id
   key_name = aws_key_pair.ec2_ssh.key_name
   ami = data.aws_ami.amazon-linux-2.image_id

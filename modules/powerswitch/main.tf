@@ -1,5 +1,6 @@
 module "powerswitch_label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  source = "cloudposse/label/null"
+  version = "0.16.0"
   namespace = "minecraft"
   name = "powerswitch"
   delimiter = "-"
@@ -12,6 +13,7 @@ module "powerswitch_label" {
 
 module "alb_security_group" {
   source = "terraform-aws-modules/security-group/aws"
+  version = "3.13.0"
   name = "${module.powerswitch_label.id}-alb"
   description = "Allow TCP traffic on 80 from anywehere."
   vpc_id = var.vpc_id
@@ -81,6 +83,7 @@ resource "aws_lb_listener_rule" "start_server_endpoint_rule" {
 
 module "start_server_function" {
   source = "terraform-aws-modules/lambda/aws"
+  version = "1.17.0"
   function_name = "${module.powerswitch_label.id}-start-server"
   description = "Function for starting the Minecraft server instance"
   handler = "start_server.lambda_handler"
@@ -135,6 +138,7 @@ resource "aws_lb_listener_rule" "stop_server_endpoint_rule" {
 
 module "stop_server_function" {
   source = "terraform-aws-modules/lambda/aws"
+  version = "1.17.0"
   function_name = "${module.powerswitch_label.id}-stop-server"
   description = "Function for stopping the Minecraft server instance"
   handler = "stop_server.lambda_handler"
@@ -189,6 +193,7 @@ resource "aws_lb_listener_rule" "get_server_status_endpoint_rule" {
 
 module "get_server_status_function" {
   source = "terraform-aws-modules/lambda/aws"
+  version = "1.17.0"
   function_name = "${module.powerswitch_label.id}-get-server-status"
   description = "Function for getting the status of the Minecraft server instance"
   handler = "get_server_status.lambda_handler"

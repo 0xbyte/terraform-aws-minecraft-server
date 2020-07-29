@@ -1,5 +1,6 @@
 module "network_label" {
-  source = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.16.0"
+  source = "cloudposse/label/null"
+  version = "0.16.0"
   namespace = "minecraft"
   name = "network"
   delimiter = "-"
@@ -12,6 +13,7 @@ module "network_label" {
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
+  version = "2.44.0"
   name = module.network_label.id
   cidr = "10.0.0.0/16"
   azs = var.availability_zones
