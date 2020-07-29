@@ -11,5 +11,8 @@ def lambda_handler(event, context):
   ec2.start_instances(InstanceIds=instances)
   return {
     'statusCode': 200,
-    'body': 'Server started.'
+    'body': 'Server started.',
+    'headers': {
+      'Content-Type': 'text/plain'
+    }
   }

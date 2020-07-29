@@ -11,5 +11,8 @@ def lambda_handler(event, context):
   ec2.stop_instances(InstanceIds=instances)
   return {
     'statusCode': 200,
-    'body': 'Server stopped.'
+    'body': 'Server stopped.',
+    'headers': {
+      'Content-Type': 'text/plain'
+    }
   }

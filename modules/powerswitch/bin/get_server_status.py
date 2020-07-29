@@ -13,5 +13,8 @@ def lambda_handler(event, context):
   status = response['Reservations'][0]['Instances'][0]['State']['Name']
   return {
     'statusCode': 200,
-    'body': f'Server is currently {status} with an IP address of {ip}.'
+    'body': f'Server is currently {status} with an IP address of {ip}.',
+    'headers': {
+      'Content-Type': 'text/plain'
+    }
   }
