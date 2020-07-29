@@ -31,4 +31,5 @@ module "powerswitch" {
   server_instance_arn = module.server.instance_arn
   hostname = var.power_switch_hostname
   hosted_zone_name = var.power_switch_hosted_zone_name
+  mc_server_port = var.mc_port
 }

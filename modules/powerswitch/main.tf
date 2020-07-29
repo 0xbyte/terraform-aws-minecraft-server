@@ -202,6 +202,7 @@ module "get_server_status_function" {
   environment_variables = {
     MINECRAFT_SERVER_INSTANCE_ID = var.server_instance_id
     MINECRAFT_SERVER_REGION = var.region
+    MINECRAFT_SERVER_PORT = var.mc_server_port
   }
   tags = module.powerswitch_label.tags
   attach_policy_json = true

@@ -23,6 +23,11 @@ variable "server_instance_arn" {
   type = string
 }
 
+variable "mc_server_port" {
+  description = "Port that the Minecraft server will run on"
+  type = string
+}
+
 variable "hostname" {
   description = "Hostname of the DNS record that will be created to point to the load balancer"
   type = string
