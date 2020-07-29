@@ -11,3 +11,4 @@ crash.log
 
 ec2-private-key.pem
 mc_server_files/*
+builds/
