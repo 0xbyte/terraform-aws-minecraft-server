@@ -14,3 +14,6 @@ mc_server_files/*
 builds/
 
 .DS_Store
+
+terraform.tfvars
+
