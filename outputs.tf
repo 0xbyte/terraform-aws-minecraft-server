@@ -12,3 +12,7 @@ output "ssh_command" {
 output "minecraft_server" {
   value = "${module.server.public_ip}:${module.server.minecraft_port}"
 }
+
+output "mc_server_files_uploaded_to_bucket" {
+  value = module.server.mc_server_files_uploaded_to_bucket
+}

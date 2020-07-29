@@ -33,6 +33,17 @@ module "bucket" {
   tags = module.server_label.tags
 }
 
+locals {
+  mc_server_files_path = "${path.root}/mc_server_files"
+}
+
+resource "aws_s3_bucket_object" "server_files" {
+  for_each = fileset(local.mc_server_files_path, "**")
+  bucket = module.bucket.this_s3_bucket_id
+  key = each.value
+  source = "${local.mc_server_files_path}/${each.value}"
+}
+
 module "ec2_iam_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "~> 2.0"
@@ -79,7 +90,7 @@ EOF
 module "ec2_security_group" {
   source = "terraform-aws-modules/security-group/aws"
   name = "${module.server_label.id}-ec2"
-  description = "Allow SSH on 22 and TCP on ${var.mc_port} from anywhere. Allow all egress."
+  description = "Allow SSH on 22 and TCP on ${var.mc_port} from anywhere. Allow egress only to S3."
   vpc_id = var.vpc_id
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules = ["ssh-tcp"]
@@ -92,8 +103,8 @@ module "ec2_security_group" {
       cidr_blocks = "0.0.0.0/0"
     }
   ]
-  egress_rules = [
-    "all-all"]
+  egress_rules = ["http-80-tcp", "https-443-tcp"]
+  egress_prefix_list_ids = [var.s3_prefix_list_id]
   tags = module.server_label.tags
 }
 
@@ -113,8 +124,6 @@ data "template_file" "user_data" {
     mc_root = var.mc_root_directory
     mc_bucket = module.bucket.this_s3_bucket_id
     mc_backup_freq = var.mc_backup_freq
-    mc_version = var.mc_version
-    mc_type = var.mc_type
     java_mx_mem = var.java_mx_mem
     java_ms_mem = var.java_ms_mem
   }
@@ -129,6 +138,9 @@ resource "aws_key_pair" "ec2_ssh" {
   key_name = module.server_label.id
   public_key = tls_private_key.ec2_ssh.public_key_openssh
   tags = module.server_label.tags
+
+  // Wait for server files to be uploaded before creating key pair (which in turn blocks creation of instance)
+  depends_on = [aws_s3_bucket_object.server_files]
 }
 
 module "ec2" {

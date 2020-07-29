@@ -10,3 +10,4 @@ crash.log
 .idea/
 
 ec2-private-key.pem
+mc_server_files/*

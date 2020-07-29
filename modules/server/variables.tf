@@ -18,37 +18,32 @@ variable "subnet_id" {
   type = string
 }
 
+variable "s3_prefix_list_id" {
+  description = "The id of the S3 VPC endpoint's prefix list"
+  type = string
+}
+
 variable "mc_port" {
   description = "TCP port for minecraft"
-  type        = number
+  type = number
 }
 
 variable "mc_root_directory" {
   description = "Where to install minecraft on your instance"
-  type        = string
-}
-
-variable "mc_version" {
-  description = "Which version of minecraft to install"
-  type        = string
-}
-
-variable "mc_type" {
-  description = "Type of minecraft distribution - snapshot or release"
-  type        = string
+  type = string
 }
 
 variable "mc_backup_freq" {
   description = "How often (mins) to sync to S3"
-  type        = number
+  type = number
 }
 
 variable "java_ms_mem" {
   description = "Java initial and minimum heap size"
-  type        = string
+  type = string
 }
 
 variable "java_mx_mem" {
   description = "Java maximum heap size"
-  type        = string
+  type = string
 }

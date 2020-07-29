@@ -9,6 +9,7 @@ variable "availability_zone" {
   type = string
   default = "eu-west-2a"
 }
+
 variable "mc_port" {
   description = "TCP port for minecraft"
   type        = number
@@ -19,18 +20,6 @@ variable "mc_root_directory" {
   description = "Where to install minecraft on your instance"
   type        = string
   default     = "/home/minecraft"
-}
-
-variable "mc_version" {
-  description = "Which version of minecraft to install"
-  type        = string
-  default     = "latest"
-}
-
-variable "mc_type" {
-  description = "Type of minecraft distribution - snapshot or release"
-  type        = string
-  default     = "release"
 }
 
 variable "mc_backup_freq" {
