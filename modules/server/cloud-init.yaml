@@ -31,6 +31,21 @@ write_files:
     path: /etc/systemd/system/minecraft.service
 
   - content: |
+      [Unit]
+      Description=Back up Minecraft server files to S3 before shutdown
+      Before=shutdown.target
+
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/bin/aws s3 sync ${mc_root} s3://${mc_bucket}
+      TimeoutStartSec=0
+
+      [Install]
+      WantedBy=shutdown.target
+    path: /etc/systemd/system/minecraft-sync.service
+
+
+  - content: |
       SHELL=/bin/bash
       PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:${mc_root}
       */${mc_backup_freq} * * * *  ec2-user  /usr/bin/aws s3 sync ${mc_root}  s3://${mc_bucket}
@@ -41,11 +56,13 @@ runcmd:
   - chkconfig yum-cron on
   - service yum-cron start
   - /usr/bin/yum upgrade -y
-  - /usr/bin/systemctl enable minecraft
   - /bin/mkdir -p ${mc_root}
   - rm -r ${mc_root}/*
   - echo "eula=true" > ${mc_root}/eula.txt
   - /usr/bin/aws s3 sync s3://${mc_bucket} ${mc_root}
   - /bin/chown -R ec2-user ${mc_root}
+  - /usr/bin/systemctl enable minecraft
+  - /usr/bin/systemctl enable minecraft-sync
   - /usr/bin/systemctl start minecraft
+  - /usr/bin/systemctl start minecraft-sync
 
