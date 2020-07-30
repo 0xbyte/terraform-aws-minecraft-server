@@ -35,17 +35,6 @@ module "bucket" {
   tags = module.server_label.tags
 }
 
-locals {
-  mc_server_files_path = "${path.root}/mc_server_files"
-}
-
-resource "aws_s3_bucket_object" "server_files" {
-  for_each = fileset(local.mc_server_files_path, "**")
-  bucket = module.bucket.this_s3_bucket_id
-  key = each.value
-  source = "${local.mc_server_files_path}/${each.value}"
-}
-
 module "ec2_iam_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
   version = "2.12.0"
@@ -142,9 +131,6 @@ resource "aws_key_pair" "ec2_ssh" {
   key_name = module.server_label.id
   public_key = tls_private_key.ec2_ssh.public_key_openssh
   tags = module.server_label.tags
-
-  // Wait for server files to be uploaded before creating key pair (which in turn blocks creation of instance)
-  depends_on = [aws_s3_bucket_object.server_files]
 }
 
 module "ec2" {

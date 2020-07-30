@@ -9,8 +9,12 @@ output "ssh_command" {
   value = "ssh -i ${path.module}/ec2-private-key.pem ec2-user@${module.server.public_ip}"
 }
 
-output "minecraft_server" {
+output "minecraft_server_address" {
   value = "${module.server.public_ip}:${module.server.minecraft_port}"
+}
+
+output "minecraft_server_instance_id" {
+  value = module.server.instance_id
 }
 
 output "mc_server_files_uploaded_to_bucket" {

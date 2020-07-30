@@ -4,20 +4,31 @@ Terraform module for deploying a Minecraft server into AWS alongside Lambda func
 
 ## Deployment
 
+Deploy all of the infrastructure by applying the Terraform configuration:
 ```bash
 terraform apply
 ```
 
+Stop the server:
+```bash
+aws ec2 stop-instances --instance-ids $(terraform output -json | jq -r '.minecraft_server_instance_id.value')
+``` 
+
+Upload the server files to the S3 bucket:
+```bash
+aws s3 sync ./mc_server_files s3://$(terraform output -json | jq -r '.server_files_bucket_name.value')
+``` 
+
+Start the server:
+```bash
+aws ec2 start-instances --instance-ids $(terraform output -json | jq -r '.minecraft_server_instance_id.value')
+``` 
+
 ## Managing the Server
-This module also deploys three Lambda functions that can be invoked to start, stop and view the status (including current IP address) of the Minecraft server. There are Terraform outputs that display the URLs for each of these functions following deployment.
+This module also deploys three Lambda functions that can be invoked to start, stop and view the status (including current IP address) of the Minecraft server. The `server_status_url` output displays the URL of the status page where the server can be managed.
 
-## Server Files
-
-### Uploading Files
-Minecraft server files (e.g. minecraft_server.zip) can be uploaded to the S3 bucket upon deployment by placing them in the `mc_server_files` directory.
-
-### Downloading Files
-Use the following command to sync the remote bucket's Minecraft server files to the local directory. 
+## Downloading Files
+Use the following command to sync the remote bucket's Minecraft server files back to the local directory. 
 ```bash
 aws s3 sync s3://$(terraform output -json | jq -r '.server_files_bucket_name.value') ./mc_server_files/
 ```
