@@ -21,14 +21,6 @@ output "server_files_bucket_name" {
   value = module.server.bucket_name
 }
 
-output "start_server_url" {
-  value = module.powerswitch.start_server_url
-}
-
-output "stop_server_url" {
-  value = module.powerswitch.stop_server_url
-}
-
-output "get_server_status_url" {
-  value = module.powerswitch.get_server_status_url
+output "server_status_url" {
+  value = module.powerswitch.server_status_url
 }

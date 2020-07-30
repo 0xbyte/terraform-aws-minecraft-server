@@ -74,6 +74,11 @@ resource "aws_lb_listener_rule" "start_server_endpoint_rule" {
     target_group_arn = aws_lb_target_group.start_server_tg.arn
   }
   condition {
+    http_request_method {
+      values = ["POST"]
+    }
+  }
+  condition {
     path_pattern {
       values = [
         "/start"]
@@ -127,6 +132,11 @@ resource "aws_lb_listener_rule" "stop_server_endpoint_rule" {
   action {
     type = "forward"
     target_group_arn = aws_lb_target_group.stop_server_tg.arn
+  }
+  condition {
+    http_request_method {
+      values = ["POST"]
+    }
   }
   condition {
     path_pattern {
