@@ -1,0 +1,51 @@
+#cloud-config
+
+cloud_final_modules:
+  - [scripts-user, always]
+
+repo_update: true
+repo_upgrade: all
+
+packages:
+  - java-1.8.0
+  - yum-cron
+  - wget
+  - awscli
+  - jq
+
+write_files:
+  - content: |
+      [Unit]
+      Description=Minecraft Server
+      After=network.target
+
+      [Service]
+      Type=simple
+      User=ec2-user
+      WorkingDirectory=${mc_root}
+      ExecStart=/usr/bin/java -Xmx${java_mx_mem} -Xms${java_ms_mem} -jar ${mc_jar_name} nogui
+      Restart=on-abort
+
+      [Install]
+      WantedBy=multi-user.target
+    path: /etc/systemd/system/minecraft.service
+
+  - content: |
+      SHELL=/bin/bash
+      PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:${mc_root}
+      */${mc_backup_freq} * * * *  ec2-user  /usr/bin/aws s3 sync ${mc_root}  s3://${mc_bucket}
+    path: /etc/cron.d/minecraft
+
+runcmd:
+  - /bin/sed -i -e 's/update_cmd = default/update_cmd = security/' -e 's/apply_updates = no/apply_updates = yes/' -e 's/emit_via = stdio/emit_via = email/' /etc/yum/yum-cron.conf
+  - chkconfig yum-cron on
+  - service yum-cron start
+  - /usr/bin/yum upgrade -y
+  - /usr/bin/systemctl enable minecraft
+  - /bin/mkdir -p ${mc_root}
+  - rm -r ${mc_root}/*
+  - echo "eula=true" > ${mc_root}/eula.txt
+  - /usr/bin/aws s3 sync s3://${mc_bucket} ${mc_root}
+  - /bin/chown -R ec2-user ${mc_root}
+  - /usr/bin/systemctl start minecraft
+

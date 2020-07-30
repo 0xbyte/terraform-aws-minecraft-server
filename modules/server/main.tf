@@ -110,7 +110,7 @@ data "aws_ami" "amazon-linux-2" {
 }
 
 data "template_file" "user_data" {
-  template = file("${path.module}/bin/user_data.sh")
+  template = file("${path.module}/cloud-init.yaml")
 
   vars = {
     mc_root = var.mc_root_directory
